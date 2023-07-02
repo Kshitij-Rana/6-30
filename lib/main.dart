@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'cart.dart';
+import 'home.dart';
+import 'profile.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -31,44 +35,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int currentPage = 0;
+  List<Widget> screens = [
+    const HomePage(),
+    const CartPage(),
+    const ProfilePage(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.teal,
-        body: SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 100,
-                  color: Colors.red,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      color: Colors.yellow,
-                    ),
-                    Container(
-                      height: 100,
-                      width: 100,
-                      color: Colors.green,
-                    )
-                  ],
-                ),
-                Container(
-                  width: 100,
-                  color: Colors.blue,
-                )
-              ],
+      appBar: AppBar(
+        title: const Text('My appbar'),
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.chat)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
+        ],
+      ),
+      backgroundColor: Colors.teal,
+      body: screens[currentPage],
+      drawer: const Drawer(
+          child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Home',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-          ),
-        ));
+            Text('Cart',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text('Profile',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+          ],
+        ),
+      )),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentPage,
+          onTap: (value) {
+            setState(() {
+              currentPage = value;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_basket), label: 'Cart'),
+            BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Profile'),
+          ]),
+    );
   }
 }
