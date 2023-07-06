@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:naya_project/cart.dart';
 import 'package:naya_project/home.dart';
 import 'package:naya_project/message.dart';
@@ -54,22 +55,52 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                runApp(const MaterialApp(
-                  home: NotificationPage(),
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
                 ));
               },
               icon: const Icon(Icons.notification_add)),
           IconButton(
               onPressed: () {
-                runApp(const MaterialApp(
-                  home: MessagePage(),
-                ));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MessagePage()));
               },
               icon: const Icon(Icons.message))
         ],
       ),
       body: screens[currentState],
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: SafeArea(
+            child: Column(
+          children: [
+            const Hero(
+              tag: 'profile',
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(
+                    'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: Text(
+                'Profile',
+                style:
+                    TextStyle(fontFamily: GoogleFonts.sacramento().fontFamily),
+              ),
+              subtitle: const Text('Go to your profile'),
+              trailing: const Icon(Icons.arrow_forward_ios_sharp),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfilePage()));
+              },
+            )
+          ],
+        )),
+      ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentState,
           onTap: (value) {
